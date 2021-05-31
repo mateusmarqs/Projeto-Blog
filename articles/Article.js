@@ -1,7 +1,8 @@
 const sequelize = require('sequelize')
 const connection = require('../database/connection')
+const Category = require('../categories/Category')
 
-const Article = sequelize.deifne('articles', {
+const Article = connection.define('articles', {
     title: {
         type: sequelize.STRING,
         allowNull: false
@@ -16,4 +17,11 @@ const Article = sequelize.deifne('articles', {
     }
 })
 
-module.exports = article
+Category.hasMany(Article) //Dizendo que uma categoria tem diversos artigos
+Article.belongsTo(Category) //Dizendo que um artigo pertence uma categoria  
+
+Article.sync({
+    force: false
+})
+
+module.exports = Article
