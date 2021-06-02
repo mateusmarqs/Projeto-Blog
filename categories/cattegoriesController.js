@@ -15,7 +15,7 @@ router.post('/categories/save', (req, res) => {
             title: title,
             slug: slugify(title)
         }).then(() => {
-            res.redirect("/")
+            res.redirect("/admin/categories")
         })
 
     } else {
@@ -27,6 +27,28 @@ router.get('/admin/categories', (req, res) => {
     Category.findAll().then(categories => {
         res.render("admin/categories", {categories: categories})
     })
+})
+
+router.post("/categories/delete", (req,res) => {
+    var id = req.body.id
+
+    if (id != undefined) {
+        if (!isNaN(id)) {
+
+            Category.destroy({
+                where: {
+                    id: id
+                }
+            }).then(() => {
+                res.redirect('/admin/categories')
+            })
+
+        } else { //Não for um número
+            res.redirect('/admin/categories')
+        } 
+    } else { //For nulo
+        res.redirect('/admin/categories')
+    }
 })
 
 module.exports = router
