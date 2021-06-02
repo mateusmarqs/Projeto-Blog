@@ -4,20 +4,22 @@
     <br>
     <div class="container">
         <h2>Categorias</h2>
-        <table class="table table-borderadd">
+        <table class="table table-bordered">
             <thead>
                 <th>ID</th>
                 <th>Titulo</th>
                 <th>Slug</th>
-                <html>Ações</html>
+                <th>Ações</th>
             </thead>
             <tbody>
+                <% categories.forEach(category => { %>
                 <tr>
-                    <th>1</th>
-                    <th>Dev Web</th>
-                    <th>def-web</th>
+                    <th> <%= category.id %></th>
+                    <th> <%= category.title %></th>
+                    <th> <%= category.slug %></th>
                     <th></th>
-                </tr>
+                </tr>                                               
+                <% }) %>
             </tbody>
         </table>
     </div>
