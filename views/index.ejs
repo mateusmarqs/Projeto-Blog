@@ -19,12 +19,11 @@
                     <h2> <%= article.title %> </h2>
                 </div>
                 <div class="card-body">
-                    <a href="#" class="btn btn-success">ler artigo</a>
+                    <a href="/<%= article.slug %> " class="btn btn-success">ler artigo</a>
                 </div>
             </div>
             <br>
         <% }) %> 
     </div>
-    
 </body>
 <%- include('partials/footer.ejs') %>
