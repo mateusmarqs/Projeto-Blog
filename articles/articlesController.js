@@ -5,7 +5,11 @@ const slugify = require('slugify')
 const Article = require('./Article')
 
 router.get('/admin/articles', (req, res) => {
-    res.send("Rota de aritgo")
+    Article.findAll({
+        include: [{model: Category}] //Inclui os dados do Category através do relacionamento
+    }).then( articles => {
+        res.render("admin/articles/index", {articles: articles})
+    })
 })
 
 router.get('/admin/articles/new', (req, res) => {
@@ -27,6 +31,64 @@ router.post('/admin/articles/save', (req, res) => {
     }).then(() => {
         res.redirect('/admin/articles')
     })
+})
+
+router.post("/admin/article/delete", (req,res) => {
+    var id = req.body.id
+
+    if (id != undefined) {
+        if (!isNaN(id)) {
+
+            Article.destroy({
+                where: {
+                    id: id
+                }
+            }).then(() => {
+                res.redirect('/admin/articles')
+            })
+
+        } else { //Não for um número
+            res.redirect('/admin/articles')
+        } 
+    } else { //For nulo
+        res.redirect('/admin/articles')
+    }
+})
+
+router.get('/admin/articles/edit/:id', (req, res) => {
+    var id = req.params.id //Parametro da URL
+
+    if (isNaN(id)) {
+        res.redirect('/admin/articles')
+    }
+    Article.findByPk(id).then(article => {
+        if (article != undefined) {
+            Category.findAll().then( categories => {
+                res.render('admin/articles/edit', {article: article, categories: categories})
+            })
+        } else {
+            res.redirect('/admin/articles')
+        }
+    }).catch(erro => {
+        res.redirect('/admin/articles')
+    })
+})
+
+router.post('/articles/update', (req, res) => {
+    var id = req.body.id
+    var title = req.body.title
+
+    if (title != '') {
+        Category.update({title: title, slug: slugify(title)}, {
+            where: {
+                id: id,
+            }
+        }).then(() => {
+            res.redirect('/admin/articles')
+        })
+    } else {
+        res.redirect('/admin/articles/edit/'+id)
+    }
 })
 
 module.exports = router
