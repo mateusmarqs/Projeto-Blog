@@ -3,8 +3,9 @@ const router = express.Router()
 const Category = require('../categories/Category')
 const slugify = require('slugify')
 const Article = require('./Article')
+const adminAuth = require('../middlewares/adminAuth')
 
-router.get('/admin/articles', (req, res) => {
+router.get('/admin/articles', adminAuth,  (req, res) => {
     Article.findAll({
         include: [{model: Category}] //Inclui os dados do Category através do relacionamento
     }).then( articles => {
@@ -12,13 +13,13 @@ router.get('/admin/articles', (req, res) => {
     })
 })
 
-router.get('/admin/articles/new', (req, res) => {
+router.get('/admin/articles/new', adminAuth, (req, res) => {
     Category.findAll().then( categories => {
         res.render('admin/articles/new', {categories: categories})
     })
 })
 
-router.post('/admin/articles/save', (req, res) => {
+router.post('/admin/articles/save', adminAuth, (req, res) => {
     var title = req.body.title
     var body = req.body.body
     var category = req.body.category
@@ -33,7 +34,7 @@ router.post('/admin/articles/save', (req, res) => {
     })
 })
 
-router.post("/admin/article/delete", (req,res) => {
+router.post("/admin/article/delete", adminAuth, (req,res) => {
     var id = req.body.id
 
     if (id != undefined) {
@@ -55,7 +56,7 @@ router.post("/admin/article/delete", (req,res) => {
     }
 })
 
-router.get('/admin/articles/edit/:id', (req, res) => {
+router.get('/admin/articles/edit/:id', adminAuth, (req, res) => {
     var id = req.params.id //Parametro da URL
 
     if (isNaN(id)) {
@@ -74,7 +75,7 @@ router.get('/admin/articles/edit/:id', (req, res) => {
     })
 })
 
-router.post('/articles/update', (req, res) => {
+router.post('/articles/update', adminAuth, (req, res) => {
     var id = req.body.id
     var title = req.body.title
     var body = req.body.body

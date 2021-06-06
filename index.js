@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const connection = require("./database/connection")
+const session = require('express-session')
 
 const categoriesController = require('./categories/CattegoriesController')
 const articlesController = require('./articles/ArticlesController')
@@ -13,6 +14,14 @@ const User = require('./users/User')
 
 //View Engine
 app.set('view engine', 'ejs')
+
+//Session
+app.use(session({
+    secret: 'qualquercoisaaleatoriasegura',
+    coockie: {
+        maxage: 300000 //Aqui está em milisegundos
+    }
+}))
 
 //Static
 app.use(express.static('public'))
@@ -40,6 +49,14 @@ app.use('/', categoriesController)
 app.use('/', articlesController)
 //User Controller
 app.use('/', usersController)
+
+app.use('/session', (req, res) => {
+
+})
+
+app.use('/leitura', (req, res) => {
+    
+})
 
 //Rotas
 app.get('/', (req, res) => {
