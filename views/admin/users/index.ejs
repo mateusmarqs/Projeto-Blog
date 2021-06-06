@@ -1,0 +1,42 @@
+<%- include("../../partials/header.ejs") %>
+<body>
+    <%- include("../../partials/navbar.ejs") %>
+    <br>
+    <div class="container">
+        <h2> Usuários </h2>
+        <a class="btn btn-success" href="/admin/users/create">Cadastrar novo usuário</a> 
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <th>ID</th>
+                <th>e-mail</th>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                <tr>
+                    <th> <%= user.id %></th>
+                    <th> <%= user.email %></th>
+                    <!-- <th>
+                        <a class="btn btn-warning" href="/admin/articles/edit/">Editar</a>                 
+                        <form action="/admin/article/delete" method="POST" style="display: inline" onsubmit="confirmarDelecao(event, this)">
+                            <input type="hidden" name="id" value="">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </th>
+                </tr> -->                                               
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include("../../partials/footer.ejs") %>
+<!-- <script>
+    function confirmarDelecao(event, form) {
+        event.preventDefault()
+        console.log("O formulário não foi enviado.")
+        var decision = confirm("Você tem certeza que quer deletar esse artigo?")
+        if (decision) {
+            form.submit()
+        }
+    }
+</script> -->
